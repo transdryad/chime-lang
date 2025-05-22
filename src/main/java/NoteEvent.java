@@ -1,36 +1,51 @@
+import javax.sound.midi.MetaMessage;
 import javax.sound.midi.MidiEvent;
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.ShortMessage;
 
-public class NoteEvent {
+public class NoteEvent{
     public MidiEvent midiEvent;
     public MidiMessage midiMessage;
-    public int action;
-    public int noteNumber;
-    public int velocity;
+    public long timestamp;
+    public int action = -1;
+    public int noteNumber = -1;
+    public int velocity = -1;
+    public int bpm = -1;
 
     public NoteEvent(MidiEvent event, MidiMessage message) {
         this.midiEvent = event;
         this.midiMessage = message;
+        this.timestamp = this.midiEvent.getTick();
         if (message instanceof ShortMessage shortMessage) {
             if (shortMessage.getCommand() == ShortMessage.NOTE_ON) {
                 this.action = 1;
                 this.noteNumber = shortMessage.getData1();
                 this.velocity = shortMessage.getData2();
-                //System.out.println("Note  " + this.action + ": Key=" + this.noteNumber + ", Velocity=" + this.velocity);
             } else if (shortMessage.getCommand() == ShortMessage.NOTE_OFF) {
                 this.action = 0;
                 this.noteNumber = shortMessage.getData1();
                 this.velocity = shortMessage.getData2();
             }
-        } else {
-            this.action = -1;
-            this.noteNumber = -1;
-            this.velocity = -1;
+        } else if (message instanceof MetaMessage) {
+            MetaMessage mm = (MetaMessage) message;
+            if(mm.getType()==0x51){
+                this.action = 2;
+                byte[] data = mm.getData();
+                int tempo = (data[0] & 0xff) << 16 | (data[1] & 0xff) << 8 | (data[2] & 0xff);
+                bpm = 60000000 / tempo;
+            }
         }
     }
 
     public String toString() {
-        return "Note  " + this.action + ": Key=" + this.noteNumber + ", Velocity=" + this.velocity + ", PIANO key=" + (this.noteNumber-20);
+        if (this.action==2) {
+            return "Metadata event: bpm=" + this.bpm;
+        } else {
+            return "(Note  " + this.action + ": Key=" + this.noteNumber + ", Velocity=" + this.velocity + ", PIANO key=" + (this.noteNumber - 20) + ", Timestamp=" + this.timestamp + ")";
+        }
+    }
+
+    public int getTimestamp() {
+        return Math.toIntExact(this.timestamp);
     }
 }
