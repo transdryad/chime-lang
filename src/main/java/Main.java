@@ -1,12 +1,13 @@
 import javax.sound.midi.*;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 public class Main {
     public static List<NoteEvent> noteEvents = new ArrayList<>();
+    public static List<List<NoteEvent>> chords = new ArrayList<>();
+    public static int bpm;
 
     public static void main(String[] args) {
         //if (args.length < 1) {throw new IllegalStateException("A filename must be provided");}
@@ -26,7 +27,16 @@ public class Main {
                 }
             }
             noteEvents.sort(Comparator.comparingInt(NoteEvent::getTimestamp));
-            System.out.println(noteEvents);
+            bpm = noteEvents.getFirst().bpm;
+            System.out.println("bpm: "+bpm);
+            for (int i = 0; i < res; i++) {
+                int finalI = i;
+                List<NoteEvent> timedEvents = noteEvents.stream().filter(item -> item.getTimestamp() == finalI).toList();
+                if (!timedEvents.isEmpty()) {
+                    chords.add(timedEvents);
+                }
+            }
+            System.out.println(chords);
         } catch (Exception e) {
             e.printStackTrace();
         }

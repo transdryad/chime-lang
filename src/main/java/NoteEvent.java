@@ -26,10 +26,10 @@ public class NoteEvent{
                 this.noteNumber = shortMessage.getData1();
                 this.velocity = shortMessage.getData2();
             }
-        } else if (message instanceof MetaMessage) {
-            MetaMessage mm = (MetaMessage) message;
+        } else if (message instanceof MetaMessage mm) {
             if(mm.getType()==0x51){
                 this.action = 2;
+                this.timestamp = -1;
                 byte[] data = mm.getData();
                 int tempo = (data[0] & 0xff) << 16 | (data[1] & 0xff) << 8 | (data[2] & 0xff);
                 bpm = 60000000 / tempo;
