@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Main {
     public static List<NoteEvent> noteEvents = new ArrayList<>();
-    public static List<List<NoteEvent>> chords = new ArrayList<>();
+    public static List<List<Integer>> chords = new ArrayList<>();
     public static int bpm;
 
     public static void main(String[] args) {
@@ -33,7 +33,11 @@ public class Main {
                 int finalI = i;
                 List<NoteEvent> timedEvents = noteEvents.stream().filter(item -> item.getTimestamp() == finalI).toList();
                 if (!timedEvents.isEmpty()) {
-                    chords.add(timedEvents);
+                    List<Integer> notes = new ArrayList<>();
+                    for (NoteEvent event : timedEvents) {
+                        notes.add(event.getNoteNumber());
+                    }
+                    chords.add(notes);
                 }
             }
             System.out.println(chords);

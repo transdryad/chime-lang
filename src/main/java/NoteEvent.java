@@ -48,4 +48,8 @@ public class NoteEvent{
     public int getTimestamp() {
         return Math.toIntExact(this.timestamp);
     }
+
+    public int getNoteNumber() {
+        return this.noteNumber;
+    }
 }
