@@ -1,3 +1,4 @@
+package org.hazelv.chime;
 import javax.sound.midi.MetaMessage;
 import javax.sound.midi.MidiEvent;
 import javax.sound.midi.MidiMessage;

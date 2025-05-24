@@ -1,3 +1,4 @@
+package org.hazelv.chime;
 import javax.sound.midi.*;
 import java.io.File;
 import java.util.ArrayList;
@@ -6,13 +7,15 @@ import java.util.List;
 
 public class Main {
     public static List<NoteEvent> noteEvents = new ArrayList<>();
-    public static List<List<Integer>> chords = new ArrayList<>();
+    public static List<List<NoteName>> chords = new ArrayList<>();
     public static int bpm;
+    public static Song song;
 
     public static void main(String[] args) {
-        if (args.length < 1) {throw new IllegalStateException("A filename must be provided");}
+        //if (args.length < 1) {throw new IllegalStateException("A filename must be provided");}
         try {
-            File file = new File(args[0]);
+            //File file = new File(args[0]);
+            File file = new File("Test.mid");
             Sequence sequence = MidiSystem.getSequence(file);
             long res = sequence.getTickLength();
             for (Track track : sequence.getTracks()) {
@@ -32,17 +35,23 @@ public class Main {
                 int finalI = i;
                 List<NoteEvent> timedEvents = noteEvents.stream().filter(item -> item.getTimestamp() == finalI && item.action != 0).toList();
                 if (!timedEvents.isEmpty()) {
-                    List<Integer> notes = new ArrayList<>();
+                    List<NoteName> notes = new ArrayList<>();
                     for (NoteEvent event : timedEvents) {
-                            notes.add(event.getNoteNumber());
+                            notes.add(NoteName.values()[event.getNoteNumber()]);
                     }
                     chords.add(notes);
                 }
             }
-            System.out.println(chords);
+            song = songFromChords(chords);
+            song.parse();
+            song.run();
         } catch (Exception e) {
             //noinspection CallToPrintStackTrace
             e.printStackTrace();
         }
+    }
+
+    public static Song songFromChords(List<List<NoteName>> chords) {
+        return new Song(chords);
     }
 }

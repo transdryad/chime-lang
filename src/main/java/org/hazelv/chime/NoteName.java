@@ -1,3 +1,4 @@
+package org.hazelv.chime;
 public enum NoteName {
     N0, N1, N2, N3, N4, N5, N6, N7, N8, N9, N10, N11, N12, N13, N14, N15, N16, N17, N18, N19, N20, //low midi notes that don't exist
     A0, Bb0, B0,
