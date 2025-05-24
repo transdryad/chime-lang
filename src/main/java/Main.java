@@ -31,17 +31,18 @@ public class Main {
             System.out.println("bpm: "+bpm);
             for (int i = 0; i < res; i++) {
                 int finalI = i;
-                List<NoteEvent> timedEvents = noteEvents.stream().filter(item -> item.getTimestamp() == finalI).toList();
+                List<NoteEvent> timedEvents = noteEvents.stream().filter(item -> item.getTimestamp() == finalI && item.action != 0).toList();
                 if (!timedEvents.isEmpty()) {
                     List<Integer> notes = new ArrayList<>();
                     for (NoteEvent event : timedEvents) {
-                        notes.add(event.getNoteNumber());
+                            notes.add(event.getNoteNumber());
                     }
                     chords.add(notes);
                 }
             }
             System.out.println(chords);
         } catch (Exception e) {
+            //noinspection CallToPrintStackTrace
             e.printStackTrace();
         }
     }

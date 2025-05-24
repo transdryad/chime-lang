@@ -17,11 +17,12 @@ public class NoteEvent{
         this.midiMessage = message;
         this.timestamp = this.midiEvent.getTick();
         if (message instanceof ShortMessage shortMessage) {
-            if (shortMessage.getCommand() == ShortMessage.NOTE_ON) {
+            if (shortMessage.getCommand() == ShortMessage.NOTE_ON && shortMessage.getData2() != 0) {
                 this.action = 1;
                 this.noteNumber = shortMessage.getData1();
                 this.velocity = shortMessage.getData2();
-            } else if (shortMessage.getCommand() == ShortMessage.NOTE_OFF) {
+            } else if (shortMessage.getCommand() == ShortMessage.NOTE_OFF || shortMessage.getData2() == 0) {
+                System.out.println("Note Off");
                 this.action = 0;
                 this.noteNumber = shortMessage.getData1();
                 this.velocity = shortMessage.getData2();
