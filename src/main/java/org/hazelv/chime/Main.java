@@ -42,6 +42,7 @@ public class Main {
                     chords.add(notes);
                 }
             }
+            System.out.println("chords: "+chords);
             song = songFromChords(chords);
             song.parse();
             song.run();
