@@ -22,7 +22,6 @@ public class NoteEvent{
                 this.noteNumber = shortMessage.getData1();
                 this.velocity = shortMessage.getData2();
             } else if (shortMessage.getCommand() == ShortMessage.NOTE_OFF || shortMessage.getData2() == 0) {
-                System.out.println("Note Off");
                 this.action = 0;
                 this.noteNumber = shortMessage.getData1();
                 this.velocity = shortMessage.getData2();

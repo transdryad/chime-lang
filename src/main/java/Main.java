@@ -10,10 +10,9 @@ public class Main {
     public static int bpm;
 
     public static void main(String[] args) {
-        //if (args.length < 1) {throw new IllegalStateException("A filename must be provided");}
-        //File file = new File(args[0]);
+        if (args.length < 1) {throw new IllegalStateException("A filename must be provided");}
         try {
-            File file = new File("./Test.mid");
+            File file = new File(args[0]);
             Sequence sequence = MidiSystem.getSequence(file);
             long res = sequence.getTickLength();
             for (Track track : sequence.getTracks()) {
