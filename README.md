@@ -1,0 +1,1 @@
+So far, this language has a single data type: integers. Unsigned 7-bit integers.
