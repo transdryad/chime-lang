@@ -37,7 +37,7 @@ public class Song {
             } else if (Objects.equals(chord, new ArrayList<>(Arrays.asList(Bb5, D6, F6)))) {
                 code.add(ChordName.GET);
             } else if (chord.size() == 1) {
-                code.add(chord.getFirst().ordinal());
+                code.add((float)chord.getFirst().ordinal());
             }
         }
     }
@@ -59,6 +59,7 @@ public class Song {
             } else if (instruction instanceof Integer) {
                 throw new IllegalArgumentException("Integer literal before instruction at chord: " + i);
             }
+            System.out.println(code + ": " + i);
             float[] arguments = getArguments(i);
             switch (instruction) {
                 case ChordName.ADD:
