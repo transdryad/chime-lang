@@ -41,6 +41,7 @@ public class Song {
             System.out.println(chords);
             throw new IllegalArgumentException("Invalid start sequence. (Are you sure this is a program?)");
         }
+        System.out.println(code);
         for (int i = 0; i < (code.size() - 1); i++) {
             Object instruction = code.get(i);
             if (instruction.equals(ChordName.START) || instruction.equals(ChordName.START2)) {
@@ -56,6 +57,7 @@ public class Song {
             switch (instruction) {
                 case ChordName.ADD:
                     currentValue = arguments[0] + arguments[1];
+                    System.out.println(currentValue);
                     i = i + 2;
                     break;
                 case ChordName.SUBTRACT:
