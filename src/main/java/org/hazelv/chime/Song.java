@@ -45,6 +45,14 @@ public class Song {
                 code.add(ChordName.PRINT_CHAR);
             } else if (Objects.equals(chord, new ArrayList<>(Arrays.asList(Ab5, C6, Eb6)))) {
                 code.add(ChordName.PRINTLN);
+            } else if (Objects.equals(chord, new ArrayList<>(Arrays.asList(C5, Eb5, G5)))) {
+                code.add(ChordName.EVAL);
+            } else if (Objects.equals(chord, new ArrayList<>(Arrays.asList(Db5, E5, Ab5)))) {
+                code.add(ChordName.JUMP);
+            } else if (Objects.equals(chord, new ArrayList<>(Arrays.asList(D5, F5, A5)))) {
+                code.add(ChordName.JUMP_IF);
+            } else if (Objects.equals(chord, new ArrayList<>(List.of(N0)))) {
+                code.add(ChordName.CURRENT_VALUE);
             } else if (chord.size() == 1) {
                 code.add((float)chord.getFirst().ordinal());
             }
@@ -106,14 +114,35 @@ public class Song {
                     break;
                 case ChordName.INPUT:
                     currentValue = (float)System.in.read();
+                    break;
                 case ChordName.HOLD:
                     currentValue = arguments[0];
                     i++;
                     break;
                 case ChordName.PRINT_CHAR:
                     System.out.print((char)currentValue);
+                    break;
                 case ChordName.PRINTLN:
                     System.out.println();
+                    break;
+                case ChordName.EVAL: // determine relationship between currentValue and first argument, ERASES currentValue
+                    if (currentValue < arguments[0]) {
+                        currentValue = 1;
+                    } else if (currentValue == arguments[0]) {
+                        currentValue = 2;
+                    } else if (currentValue > arguments[0]) {
+                        currentValue = 3;
+                    }
+                    i++;
+                    break;
+                case ChordName.JUMP: // chord count starts at 0
+                    i = (int)(arguments[0] - 1); // subtract one as for loop will add one at the end
+                    break;
+                case ChordName.JUMP_IF: // first argument is jump chord, second argument is wanted condition from eval or otherwise
+                    if (currentValue == arguments[1]) {
+                        i = (int)(arguments[0] - 1);
+                    }
+                    break;
                 default:
                     throw new IllegalStateException("Unknown Instruction: " + instruction + " at chord: " + i);
             }
@@ -127,6 +156,14 @@ public class Song {
     }
 
     public float[] getArguments(int index) {
-        return new float[]{(float)code.get(index + 1), (float)code.get(index + 2)};
+        if (code.get(index + 1).equals(ChordName.CURRENT_VALUE)) {
+            return new float[]{currentValue, (float)code.get(index + 2)};
+        } else if (code.get(index + 2).equals(ChordName.CURRENT_VALUE)) {
+            return new float[]{(float)code.get(index + 1), currentValue};
+        } else if (code.get(index + 1).equals(ChordName.CURRENT_VALUE) && code.get(index + 2).equals(ChordName.CURRENT_VALUE)) {
+            return new float[]{currentValue, currentValue};
+        } else {
+            return new float[]{(float)code.get(index + 1), (float)code.get(index + 2)};
+        }
     }
 }
