@@ -1,4 +1,5 @@
 package org.hazelv.chime;
+import java.io.IOException;
 import java.util.*;
 
 import static org.hazelv.chime.NoteName.*;
@@ -7,11 +8,11 @@ public class Song {
     public List<List<NoteName>> chords;
     public List<Object> code = new ArrayList<>();
     public List<Stack<Float>> data = new ArrayList<>();
-    public float currentValue = 0;
+    public float currentValue = 0.0f;
 
     public Song(List<List<NoteName>> chords) {
         this.chords = chords;
-        for (int i = 0; i < 128; i++) {
+        for (int i = 0; i < 8; i++) {
             data.add(new Stack<>());
         }
     }
@@ -36,13 +37,21 @@ public class Song {
                 code.add(ChordName.STORE);
             } else if (Objects.equals(chord, new ArrayList<>(Arrays.asList(Bb5, D6, F6)))) {
                 code.add(ChordName.GET);
+            } else if (Objects.equals(chord, new ArrayList<>(Arrays.asList(Db5, F5, Ab5)))) {
+                code.add(ChordName.INPUT);
+            } else if (Objects.equals(chord, new ArrayList<>(Arrays.asList(Eb5, G5, Bb5)))) {
+                code.add(ChordName.HOLD);
+            } else if (Objects.equals(chord, new ArrayList<>(Arrays.asList(Gb5, A5, Db6)))) {
+                code.add(ChordName.PRINT_CHAR);
+            } else if (Objects.equals(chord, new ArrayList<>(Arrays.asList(Ab5, C6, Eb6)))) {
+                code.add(ChordName.PRINTLN);
             } else if (chord.size() == 1) {
                 code.add((float)chord.getFirst().ordinal());
             }
         }
     }
 
-    public void run() {
+    public void run() throws IOException {
         if (!code.getFirst().equals(ChordName.START) || !code.get(1).equals(ChordName.START2)) {
             System.out.println(chords);
             throw new IllegalArgumentException("Invalid start sequence. (Are you sure this is a program?)");
@@ -59,7 +68,7 @@ public class Song {
             } else if (instruction instanceof Integer) {
                 throw new IllegalArgumentException("Integer literal before instruction at chord: " + i);
             }
-            System.out.println(code + ": " + i);
+            //System.out.println(code + ": " + i);
             float[] arguments = getArguments(i);
             switch (instruction) {
                 case ChordName.ADD:
@@ -80,16 +89,31 @@ public class Song {
                     i = i + 2;
                     break;
                 case ChordName.PRINT:
-                    System.out.println(currentValue);
+                    System.out.print(currentValue);
                     break;
                 case ChordName.STORE:
-                    data.get((int) arguments[0]).push(arguments[0]);
+                    if (data.size() < arguments[0]) {
+                        for (int ii = 0; ii < arguments[0]; ii++) {
+                            data.add(new Stack<>());
+                        }
+                    }
+                    data.get((int)arguments[0]).push(currentValue);
                     i++;
                     break;
                 case ChordName.GET:
-                    currentValue = data.get((int) arguments[0]).pop();
+                    currentValue = data.get((int)arguments[0]).pop();
                     i++;
                     break;
+                case ChordName.INPUT:
+                    currentValue = (float)System.in.read();
+                case ChordName.HOLD:
+                    currentValue = arguments[0];
+                    i++;
+                    break;
+                case ChordName.PRINT_CHAR:
+                    System.out.print((char)currentValue);
+                case ChordName.PRINTLN:
+                    System.out.println();
                 default:
                     throw new IllegalStateException("Unknown Instruction: " + instruction + " at chord: " + i);
             }
@@ -99,7 +123,7 @@ public class Song {
 
     @Override
     public String toString() {
-        return chords.toString();
+        return chords.toString() + " -> " + code.toString();
     }
 
     public float[] getArguments(int index) {
