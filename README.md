@@ -15,7 +15,6 @@ For a reference on wha those key numbers mean in terms of note in a composition 
 Chords have their root in the 5th octave, except those in the file 'header'.
 
 The tested column indicates whether a test has been written.
-To run tests: ./gradlew test --tests "org.hazelv.chime.test.MainTest"
 
 | Name        | Chord Name        | Chord                   | 'Args' | Tested | Action/Function                                                                            | Notes                                                   |
 |:------------|:------------------|:------------------------|--------|--------|:-------------------------------------------------------------------------------------------|---------------------------------------------------------|
