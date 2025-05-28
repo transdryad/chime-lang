@@ -31,3 +31,6 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+test/.mscbackup
+test/.mscbackup/*

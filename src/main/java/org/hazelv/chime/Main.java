@@ -12,10 +12,10 @@ public class Main {
     public static Song song;
 
     public static void main(String[] args) {
-        //if (args.length < 1) {throw new IllegalStateException("A filename must be provided");}
+        if (args.length < 1) {throw new IllegalStateException("A filename must be provided");}
         try {
-            //File file = new File(args[0]);
-            File file = new File("Test.mid");
+            File file = new File(args[0]);
+            //File file = new File("Test.mid");
             Sequence sequence = MidiSystem.getSequence(file);
             long res = sequence.getTickLength();
             for (Track track : sequence.getTracks()) {
@@ -30,7 +30,7 @@ public class Main {
             }
             noteEvents.sort(Comparator.comparingInt(NoteEvent::getTimestamp));
             bpm = noteEvents.getFirst().bpm;
-            System.out.println("bpm: "+bpm);
+            //System.out.println("bpm: "+bpm);
             for (int i = 0; i < res; i++) {
                 int finalI = i;
                 List<NoteEvent> timedEvents = noteEvents.stream().filter(item -> item.getTimestamp() == finalI && item.action != 0).toList();
