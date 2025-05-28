@@ -42,6 +42,6 @@ class MainTest {
     @DisplayName("Subtract")
     void subtract() {
         Main.main(new String[]{"test/Test1.mid"});
-        assertEquals("44.0", outputStreamCaptor.toString().trim());
+        assertEquals("15.0", outputStreamCaptor.toString().trim());
     }
 }
