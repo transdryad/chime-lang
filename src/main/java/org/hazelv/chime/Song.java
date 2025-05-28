@@ -41,7 +41,7 @@ public class Song {
                 code.add(ChordName.INPUT);
             } else if (Objects.equals(chord, new ArrayList<>(Arrays.asList(Eb5, G5, Bb5)))) {
                 code.add(ChordName.HOLD);
-            } else if (Objects.equals(chord, new ArrayList<>(Arrays.asList(Gb5, A5, Db6)))) {
+            } else if (Objects.equals(chord, new ArrayList<>(Arrays.asList(Gb5, Bb5, Db6)))) {
                 code.add(ChordName.PRINT_CHAR);
             } else if (Objects.equals(chord, new ArrayList<>(Arrays.asList(Ab5, C6, Eb6)))) {
                 code.add(ChordName.PRINTLN);
@@ -51,7 +51,7 @@ public class Song {
                 code.add(ChordName.JUMP);
             } else if (Objects.equals(chord, new ArrayList<>(Arrays.asList(D5, F5, A5)))) {
                 code.add(ChordName.JUMP_IF);
-            } else if (Objects.equals(chord, new ArrayList<>(List.of(N0)))) {
+            } else if (Objects.equals(chord, new ArrayList<>(Arrays.asList(Eb5, Gb5, Bb5)))) {
                 code.add(ChordName.CURRENT_VALUE);
             } else if (chord.size() == 1) {
                 code.add((float)chord.getFirst().ordinal());
