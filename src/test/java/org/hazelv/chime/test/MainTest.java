@@ -44,4 +44,25 @@ class MainTest {
         Main.main(new String[]{"test/Test2.mid"});
         assertEquals("15.0", outputStreamCaptor.toString().trim());
     }
+
+    @Test
+    @DisplayName("Divide")
+    void divide() {
+        Main.main(new String[]{"test/Test3.mid"});
+        assertEquals("2.0", outputStreamCaptor.toString().trim());
+    }
+
+    @Test
+    @DisplayName("Multiply")
+    void multiply() {
+        Main.main(new String[]{"test/Test4.mid"});
+        assertEquals("1890.0", outputStreamCaptor.toString().trim());
+    }
+
+    @Test
+    @DisplayName("Hold&Print")
+    void print() {
+        Main.main(new String[]{"test/Test5.mid"});
+        assertEquals("127.0", outputStreamCaptor.toString().trim());
+    }
 }

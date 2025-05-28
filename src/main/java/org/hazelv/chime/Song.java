@@ -6,12 +6,14 @@ import static org.hazelv.chime.NoteName.*;
 
 public class Song {
     public List<List<NoteName>> chords;
-    public List<Object> code = new ArrayList<>();
-    public List<Stack<Float>> data = new ArrayList<>();
+    public List<Object> code;
+    public List<Stack<Float>> data;
     public float currentValue = 0.0f;
 
     public Song(List<List<NoteName>> chords) {
         this.chords = chords;
+        this.code = new ArrayList<>();
+        this.data = new ArrayList<>();
         for (int i = 0; i < 8; i++) {
             data.add(new Stack<>());
         }
@@ -164,20 +166,28 @@ public class Song {
             if (code.get(index + 1).equals(ChordName.CURRENT_VALUE)) {
                 return new float[]{currentValue};
             } else {
-                return new float[]{(float)code.get(index + 1)};
+                return new float[]{getArgument(index + 1)};
             }
         } else if (index <= (code.size() - 3)) {
             if (code.get(index + 1).equals(ChordName.CURRENT_VALUE)) {
-                return new float[]{currentValue, (float) code.get(index + 2)};
+                return new float[]{currentValue, getArgument(index + 2)};
             } else if (code.get(index + 2).equals(ChordName.CURRENT_VALUE)) {
-                return new float[]{(float) code.get(index + 1), currentValue};
+                return new float[]{getArgument(index + 1), currentValue};
             } else if (code.get(index + 1).equals(ChordName.CURRENT_VALUE) && code.get(index + 2).equals(ChordName.CURRENT_VALUE)) {
                 return new float[]{currentValue, currentValue};
             } else {
-                return new float[]{(float) code.get(index + 1), (float) code.get(index + 2)};
+                return new float[]{getArgument(index + 1), getArgument(index + 2)};
             }
         } else {
             return new float[]{};
+        }
+    }
+
+    public float getArgument(int index) {
+        if (code.get(index) instanceof ChordName) {
+            return Float.NaN;
+        } else {
+            return (float)code.get(index);
         }
     }
 }
