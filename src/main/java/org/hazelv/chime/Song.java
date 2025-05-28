@@ -65,27 +65,28 @@ public class Song {
             throw new IllegalArgumentException("Invalid start sequence. (Are you sure this is a program?)");
         }
         //System.out.println(code);
-        for (int i = 0; i < (code.size() - 1); i++) {
+        for (int i = 0; i < code.size(); i++) {
             Object instruction = code.get(i);
+            //System.out.println(instruction);
             if (instruction.equals(ChordName.START) || instruction.equals(ChordName.START2)) {
                 if (i > 1) {
                     throw new IllegalArgumentException("Start sequence repeated?");
                 }
                 i++;
                 continue;
-            } else if (instruction instanceof Integer) {
-                throw new IllegalArgumentException("Integer literal before instruction at chord: " + i);
+            } else if (instruction instanceof Integer || instruction instanceof Float) {
+                throw new IllegalArgumentException("Literal before instruction at chord: " + i + ". Bad jump?");
             }
-            //System.out.println(code + ": " + i);
             float[] arguments = getArguments(i);
             switch (instruction) {
                 case ChordName.ADD:
                     currentValue = arguments[0] + arguments[1];
-                    System.out.println(currentValue);
                     i = i + 2;
                     break;
                 case ChordName.SUBTRACT:
+                    //System.out.println("Subtracting: " + arguments[0] + " - " + arguments[1]);
                     currentValue = arguments[0] - arguments[1];
+                    //System.out.println(currentValue);
                     i = i + 2;
                     break;
                 case ChordName.MULTIPLY:
@@ -97,6 +98,7 @@ public class Song {
                     i = i + 2;
                     break;
                 case ChordName.PRINT:
+                    //System.out.println("Printing");
                     System.out.print(currentValue);
                     break;
                 case ChordName.STORE:
@@ -156,14 +158,26 @@ public class Song {
     }
 
     public float[] getArguments(int index) {
-        if (code.get(index + 1).equals(ChordName.CURRENT_VALUE)) {
-            return new float[]{currentValue, (float)code.get(index + 2)};
-        } else if (code.get(index + 2).equals(ChordName.CURRENT_VALUE)) {
-            return new float[]{(float)code.get(index + 1), currentValue};
-        } else if (code.get(index + 1).equals(ChordName.CURRENT_VALUE) && code.get(index + 2).equals(ChordName.CURRENT_VALUE)) {
-            return new float[]{currentValue, currentValue};
+        if (index == (code.size() - 1)) { // end of list
+            return new float[]{};
+        } else if (index == (code.size() - 2)) { // one arg until end
+            if (code.get(index + 1).equals(ChordName.CURRENT_VALUE)) {
+                return new float[]{currentValue};
+            } else {
+                return new float[]{(float)code.get(index + 1)};
+            }
+        } else if (index <= (code.size() - 3)) {
+            if (code.get(index + 1).equals(ChordName.CURRENT_VALUE)) {
+                return new float[]{currentValue, (float) code.get(index + 2)};
+            } else if (code.get(index + 2).equals(ChordName.CURRENT_VALUE)) {
+                return new float[]{(float) code.get(index + 1), currentValue};
+            } else if (code.get(index + 1).equals(ChordName.CURRENT_VALUE) && code.get(index + 2).equals(ChordName.CURRENT_VALUE)) {
+                return new float[]{currentValue, currentValue};
+            } else {
+                return new float[]{(float) code.get(index + 1), (float) code.get(index + 2)};
+            }
         } else {
-            return new float[]{(float)code.get(index + 1), (float)code.get(index + 2)};
+            return new float[]{};
         }
     }
 }

@@ -6,16 +6,18 @@ import java.util.Comparator;
 import java.util.List;
 
 public class Main {
-    public static List<NoteEvent> noteEvents = new ArrayList<>();
-    public static List<List<NoteName>> chords = new ArrayList<>();
+    public static List<NoteEvent> noteEvents;
+    public static List<List<NoteName>> chords;
     public static int bpm;
     public static Song song;
 
     public static void main(String[] args) {
+        noteEvents = new ArrayList<>();
+        chords = new ArrayList<>();
         if (args.length < 1) {throw new IllegalStateException("A filename must be provided");}
         try {
             File file = new File(args[0]);
-            //File file = new File("Test.mid");
+            //File file = new File("test/Test2.mid");
             Sequence sequence = MidiSystem.getSequence(file);
             long res = sequence.getTickLength();
             for (Track track : sequence.getTracks()) {
