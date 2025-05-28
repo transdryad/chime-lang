@@ -125,12 +125,12 @@ public class Song {
                 case ChordName.PRINTLN:
                     System.out.println();
                     break;
-                case ChordName.EVAL: // determine relationship between currentValue and first argument, ERASES currentValue
-                    if (currentValue < arguments[0]) {
+                case ChordName.EVAL:
+                    if (arguments[0] < arguments[1]) {
                         currentValue = 1;
-                    } else if (currentValue == arguments[0]) {
+                    } else if (arguments[0] == arguments[1]) {
                         currentValue = 2;
-                    } else if (currentValue > arguments[0]) {
+                    } else if (arguments[0] > arguments[1]) {
                         currentValue = 3;
                     }
                     i++;
