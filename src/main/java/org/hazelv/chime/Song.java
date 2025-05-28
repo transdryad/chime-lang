@@ -62,9 +62,10 @@ public class Song {
     }
 
     public void run() throws IOException {
+        //System.out.println(code);
         if (!code.getFirst().equals(ChordName.START) || !code.get(1).equals(ChordName.START2)) {
-            System.out.println(chords);
-            throw new IllegalArgumentException("Invalid start sequence. (Are you sure this is a program?)");
+            //System.out.println(chords);
+            throw new IllegalArgumentException("Invalid 'header' for chime file. (Are you sure this is a program?)");
         }
         //System.out.println(code);
         for (int i = 0; i < code.size(); i++) {

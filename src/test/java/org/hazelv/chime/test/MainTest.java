@@ -16,12 +16,14 @@ import static org.junit.jupiter.api.Assertions.*;
 class MainTest {
     private final PrintStream standardOut = System.out;
     private final InputStream standardIn = System.in;
+    private final PrintStream standardErr = System.err;
     private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
-    private final ByteArrayInputStream inputStreamCaptor = new ByteArrayInputStream(new byte[0]);
+    private final ByteArrayInputStream inputStreamCaptor = new ByteArrayInputStream(new byte[]{(byte)'G'});
 
     @BeforeEach
     public void setUp() {
         System.setOut(new PrintStream(outputStreamCaptor));
+        System.setErr(new PrintStream(outputStreamCaptor));
         System.setIn(inputStreamCaptor);
     }
 
@@ -29,6 +31,7 @@ class MainTest {
     public void tearDown() {
         System.setOut(standardOut);
         System.setIn(standardIn);
+        System.setErr(standardErr);
     }
 
     @Test
@@ -64,5 +67,33 @@ class MainTest {
     void print() {
         Main.main(new String[]{"test/Test5.mid"});
         assertEquals("127.0", outputStreamCaptor.toString().trim());
+    }
+
+    @Test
+    @DisplayName("Bad header")
+    void badHeader() {
+        Main.main(new String[]{"test/Test6.mid"});
+        assertEquals("Error: Invalid 'header' for chime file. (Are you sure this is a program?)", outputStreamCaptor.toString().trim());
+    }
+
+    @Test
+    @DisplayName("Input")
+    void input() {
+        Main.main(new String[]{"test/Test7.mid"});
+        assertEquals("71.0", outputStreamCaptor.toString().trim());
+    }
+
+    @Test
+    @DisplayName("PrintCharInput")
+    void printCharInput() {
+        Main.main(new String[]{"test/Test8.mid"});
+        assertEquals("G", outputStreamCaptor.toString().trim());
+    }
+
+    @Test
+    @DisplayName("PrintLn")
+    void printLn() {
+        Main.main(new String[]{"test/Test9.mid"});
+        assertEquals("\n", outputStreamCaptor.toString());
     }
 }

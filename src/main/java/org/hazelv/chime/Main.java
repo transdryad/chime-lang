@@ -48,8 +48,7 @@ public class Main {
             song.parse();
             song.run();
         } catch (Exception e) {
-            //noinspection CallToPrintStackTrace
-            e.printStackTrace();
+            System.err.println("Error: " + e.getMessage());
         }
     }
 
