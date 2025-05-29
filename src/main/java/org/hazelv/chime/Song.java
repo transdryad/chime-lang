@@ -14,7 +14,7 @@ public class Song {
         this.chords = chords;
         this.code = new ArrayList<>();
         this.data = new ArrayList<>();
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 2; i++) {
             data.add(new Stack<>());
         }
     }
@@ -36,9 +36,9 @@ public class Song {
             } else if (Objects.equals(chord, new ArrayList<>(Arrays.asList(A5, Db6, E6)))) {
                 code.add(ChordName.PRINT);
             } else if (Objects.equals(chord, new ArrayList<>(Arrays.asList(B5, Eb6, Gb6)))) {
-                code.add(ChordName.STORE);
+                code.add(ChordName.PUSH);
             } else if (Objects.equals(chord, new ArrayList<>(Arrays.asList(Bb5, D6, F6)))) {
-                code.add(ChordName.GET);
+                code.add(ChordName.POP);
             } else if (Objects.equals(chord, new ArrayList<>(Arrays.asList(Db5, F5, Ab5)))) {
                 code.add(ChordName.INPUT);
             } else if (Objects.equals(chord, new ArrayList<>(Arrays.asList(Eb5, G5, Bb5)))) {
@@ -104,7 +104,7 @@ public class Song {
                     //System.out.println("Printing");
                     System.out.print(currentValue);
                     break;
-                case ChordName.STORE:
+                case ChordName.PUSH:
                     if (data.size() < arguments[0]) {
                         for (int ii = 0; ii < arguments[0]; ii++) {
                             data.add(new Stack<>());
@@ -113,7 +113,7 @@ public class Song {
                     data.get((int)arguments[0]).push(currentValue);
                     i++;
                     break;
-                case ChordName.GET:
+                case ChordName.POP:
                     currentValue = data.get((int)arguments[0]).pop();
                     i++;
                     break;

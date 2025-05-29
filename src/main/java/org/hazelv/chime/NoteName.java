@@ -1,6 +1,7 @@
 package org.hazelv.chime;
 public enum NoteName {
-    N0, N1, N2, N3, N4, N5, N6, N7, N8, N9, N10, N11, N12, N13, N14, N15, N16, N17, N18, N19, N20, //low midi notes that don't exist
+    N0, N1, N2, N3, N4, N5, N6, N7, N8, N9, N10, N11,
+    N12, N13, N14, N15, N16, N17, N18, N19, N20, //low midi notes that don't exist for most things
     A0, Bb0, B0,
     C1, Db1, D1, Eb1, E1, F1, Gb1, G1, Ab1, A1, Bb1, B1,
     C2, Db2, D2, Eb2, E2, F2, Gb2, G2, Ab2, A2, Bb2, B2,

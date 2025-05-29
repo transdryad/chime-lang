@@ -4,6 +4,6 @@ public enum ChordName {
     CURRENT_VALUE,
     ADD, SUBTRACT, MULTIPLY, DIVIDE, //mathematical operations
     PRINT, INPUT, PRINT_CHAR, PRINTLN, //I/O
-    HOLD, STORE, GET, //data manipulation
+    HOLD, PUSH, POP, //data manipulation
     EVAL, JUMP, JUMP_IF, // primitive control flow
 }

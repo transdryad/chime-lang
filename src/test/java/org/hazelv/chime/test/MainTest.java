@@ -38,35 +38,35 @@ class MainTest {
     @DisplayName("Add")
     void add() {
         Main.main(new String[]{"test/Test.mid"});
-        assertEquals("44.0", outputStreamCaptor.toString().trim());
+        assertEquals("44.0", outputStreamCaptor.toString());
     }
 
     @Test
     @DisplayName("Subtract")
     void subtract() {
         Main.main(new String[]{"test/Test2.mid"});
-        assertEquals("15.0", outputStreamCaptor.toString().trim());
+        assertEquals("15.0", outputStreamCaptor.toString());
     }
 
     @Test
     @DisplayName("Divide")
     void divide() {
         Main.main(new String[]{"test/Test3.mid"});
-        assertEquals("2.0", outputStreamCaptor.toString().trim());
+        assertEquals("2.0", outputStreamCaptor.toString());
     }
 
     @Test
     @DisplayName("Multiply")
     void multiply() {
         Main.main(new String[]{"test/Test4.mid"});
-        assertEquals("1890.0", outputStreamCaptor.toString().trim());
+        assertEquals("1890.0", outputStreamCaptor.toString());
     }
 
     @Test
     @DisplayName("Hold&Print")
     void print() {
         Main.main(new String[]{"test/Test5.mid"});
-        assertEquals("127.0", outputStreamCaptor.toString().trim());
+        assertEquals("127.0", outputStreamCaptor.toString());
     }
 
     @Test
@@ -80,14 +80,14 @@ class MainTest {
     @DisplayName("Input")
     void input() {
         Main.main(new String[]{"test/Test7.mid"});
-        assertEquals("71.0", outputStreamCaptor.toString().trim());
+        assertEquals("71.0", outputStreamCaptor.toString());
     }
 
     @Test
     @DisplayName("PrintCharInput")
     void printCharInput() {
         Main.main(new String[]{"test/Test8.mid"});
-        assertEquals("G", outputStreamCaptor.toString().trim());
+        assertEquals("G", outputStreamCaptor.toString());
     }
 
     @Test
@@ -95,5 +95,13 @@ class MainTest {
     void printLn() {
         Main.main(new String[]{"test/Test9.mid"});
         assertEquals("\n", outputStreamCaptor.toString());
+    }
+
+    @Test
+    @DisplayName("Basic Stack Operations (push&pop)")
+    void basicStackOperations() {
+        Main.main(new String[]{"test/Test10.mid"});
+        assertEquals("38.0", outputStreamCaptor.toString());
+        assertEquals("38.0", Main.song.data.get(54).pop().toString());
     }
 }
