@@ -9,11 +9,13 @@ public class Song {
     public List<Object> code;
     public List<Stack<Float>> data;
     public float currentValue = 0.0f;
+    public boolean debug;
 
-    public Song(List<List<NoteName>> chords) {
+    public Song(List<List<NoteName>> chords, boolean debug) {
         this.chords = chords;
         this.code = new ArrayList<>();
         this.data = new ArrayList<>();
+        this.debug = debug;
         for (int i = 0; i < 2; i++) {
             data.add(new Stack<>());
         }
@@ -66,7 +68,9 @@ public class Song {
     }
 
     public void run() throws IOException {
-        //System.out.println(code);
+        if (debug) {
+            System.out.println(code);
+        }
         if (!code.getFirst().equals(ChordName.START) || !code.get(1).equals(ChordName.START2)) {
             //System.out.println(chords);
             throw new IllegalArgumentException("Invalid 'header' for chime file. (Are you sure this is a program?)");
@@ -145,11 +149,15 @@ public class Song {
                     i = i + 2;
                     break;
                 case ChordName.JUMP: // chord count starts at 0
+                    if (code.size() <= arguments[0]) {throw new IndexOutOfBoundsException("Jump index out of range for jump from chord: " + i + " to chord: " + arguments[0]);}
                     i = (int)(arguments[0] - 1); // subtract one as for loop will add one at the end
                     break;
                 case ChordName.JUMP_IF: // first argument is jump chord, second argument is wanted condition from eval or otherwise
+                    if (code.size() <= arguments[0]) {throw new IndexOutOfBoundsException("Jump index out of range for jump from chord: " + i + " to chord: " + arguments[0]);}
                     if (currentValue == arguments[1]) {
                         i = (int)(arguments[0] - 1);
+                    } else {
+                        i = i + 2;
                     }
                     break;
                 default:

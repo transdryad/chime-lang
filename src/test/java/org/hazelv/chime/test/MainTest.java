@@ -132,4 +132,39 @@ class MainTest {
         Main.main(new String[]{"test/Test14.mid"});
         assertEquals("3.0", outputStreamCaptor.toString());
     }
+
+    @Test
+    @DisplayName("Jump")
+    void jump() {
+        Main.main(new String[]{"test/Test15.mid"});
+        assertEquals("0.0", outputStreamCaptor.toString());
+    }
+
+    @Test
+    @DisplayName("Jump bad index")
+    void jumpBadIndex() {
+        Main.main(new String[]{"test/Test16.mid"});
+        assertEquals("Error: Jump index out of range for jump from chord: 5 to chord: 23.0", outputStreamCaptor.toString().trim());
+    }
+
+    @Test
+    @DisplayName("Jump If")
+    void jumpIf() {
+        Main.main(new String[]{"test/Test17.mid"});
+        assertEquals("12.0", outputStreamCaptor.toString());
+    }
+
+    @Test
+    @DisplayName("Jump to literal")
+    void jumpToLiteral() {
+        Main.main(new String[]{"test/Test18.mid"});
+        assertEquals("Error: Literal before instruction at chord: 21. Bad jump?", outputStreamCaptor.toString().trim());
+    }
+
+    @Test
+    @DisplayName("Jump not equal")
+    void jumpNotEqual() {
+        Main.main(new String[]{"test/Test19.mid"});
+        assertEquals("119.0", outputStreamCaptor.toString());
+    }
 }

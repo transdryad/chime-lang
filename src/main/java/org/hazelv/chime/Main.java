@@ -4,17 +4,24 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 public class Main {
     public static List<NoteEvent> noteEvents;
     public static List<List<NoteName>> chords;
     public static int bpm;
     public static Song song;
+    public static boolean debug = false;
 
     public static void main(String[] args) {
         noteEvents = new ArrayList<>();
         chords = new ArrayList<>();
         if (args.length < 1) {throw new IllegalStateException("A filename must be provided");}
+        if (args.length >= 2) {
+            if (Objects.equals(args[1], "--debug")) {
+                debug = true;
+            }
+        }
         try {
             File file = new File(args[0]);
             //File file = new File("test/Test2.mid");
@@ -53,6 +60,6 @@ public class Main {
     }
 
     public static Song songFromChords(List<List<NoteName>> chords) {
-        return new Song(chords);
+        return new Song(chords, debug);
     }
 }
