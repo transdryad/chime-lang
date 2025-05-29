@@ -73,7 +73,7 @@ class MainTest {
     @DisplayName("Bad header")
     void badHeader() {
         Main.main(new String[]{"test/Test6.mid"});
-        assertEquals("Error: Unknown Chord: [C5, Eb5, G5, C3, Eb3, G3] at index: 0", outputStreamCaptor.toString().trim());
+        assertEquals("Error: Unknown Chord: [C3, Eb3, G3, C5, Eb5, G5] at index: 0", outputStreamCaptor.toString().trim());
     }
 
     @Test
@@ -165,6 +165,13 @@ class MainTest {
     @DisplayName("Jump not equal")
     void jumpNotEqual() {
         Main.main(new String[]{"test/Test19.mid"});
+        assertEquals("119.0", outputStreamCaptor.toString());
+    }
+
+    @Test
+    @DisplayName("Jump not equal w/ different instruments")
+    void jumpNotEqualDifferentInstruments() {
+        Main.main(new String[]{"test/Test20-inst.mid"});
         assertEquals("119.0", outputStreamCaptor.toString());
     }
 }

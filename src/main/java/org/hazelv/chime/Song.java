@@ -24,9 +24,10 @@ public class Song {
     public void parse() {
         int index = 0;
         for (List<NoteName> chord : chords) {
-            if (Objects.equals(chord, new ArrayList<>(Arrays.asList(C5, E5, G5, C3, E3, G3)))) {
+            chord.sort(Comparator.comparingInt(NoteName::ordinal));
+            if (Objects.equals(chord, new ArrayList<>(Arrays.asList(C3, E3, G3, C5, E5, G5)))) {
                 code.add(ChordName.START);
-            } else if (Objects.equals(chord, new ArrayList<>(Arrays.asList(C7, E7, G7, C3, Eb3, G3)))) {
+            } else if (Objects.equals(chord, new ArrayList<>(Arrays.asList(C3, Eb3, G3, C7, E7, G7)))) {
                 code.add(ChordName.START2);
             } else if (Objects.equals(chord, new ArrayList<>(Arrays.asList(D5, Gb5, A5)))) {
                 code.add(ChordName.ADD);
