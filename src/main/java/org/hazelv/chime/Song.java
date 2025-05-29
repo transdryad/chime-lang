@@ -20,6 +20,7 @@ public class Song {
     }
 
     public void parse() {
+        int index = 0;
         for (List<NoteName> chord : chords) {
             if (Objects.equals(chord, new ArrayList<>(Arrays.asList(C5, E5, G5, C3, E3, G3)))) {
                 code.add(ChordName.START);
@@ -57,7 +58,10 @@ public class Song {
                 code.add(ChordName.CURRENT_VALUE);
             } else if (chord.size() == 1) {
                 code.add((float)chord.getFirst().ordinal());
+            } else {
+                throw new IllegalArgumentException("Unknown Chord: " + chord + " at index: " + index);
             }
+            index++;
         }
     }
 
@@ -138,7 +142,7 @@ public class Song {
                     } else if (arguments[0] > arguments[1]) {
                         currentValue = 3;
                     }
-                    i++;
+                    i = i + 2;
                     break;
                 case ChordName.JUMP: // chord count starts at 0
                     i = (int)(arguments[0] - 1); // subtract one as for loop will add one at the end

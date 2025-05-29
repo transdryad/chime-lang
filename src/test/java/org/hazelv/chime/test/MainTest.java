@@ -73,7 +73,7 @@ class MainTest {
     @DisplayName("Bad header")
     void badHeader() {
         Main.main(new String[]{"test/Test6.mid"});
-        assertEquals("Error: Invalid 'header' for chime file. (Are you sure this is a program?)", outputStreamCaptor.toString().trim());
+        assertEquals("Error: Unknown Chord: [C5, Eb5, G5, C3, Eb3, G3] at index: 0", outputStreamCaptor.toString().trim());
     }
 
     @Test
@@ -103,5 +103,33 @@ class MainTest {
         Main.main(new String[]{"test/Test10.mid"});
         assertEquals("38.0", outputStreamCaptor.toString());
         assertEquals("38.0", Main.song.data.get(54).pop().toString());
+    }
+
+    @Test
+    @DisplayName("CurrentVal as a argument")
+    void currentVal() {
+        Main.main(new String[]{"test/Test11.mid"});
+        assertEquals("65.0", outputStreamCaptor.toString());
+    }
+
+    @Test
+    @DisplayName("Eval less than")
+    void evalLessThan() {
+        Main.main(new String[]{"test/Test12.mid"});
+        assertEquals("1.0", outputStreamCaptor.toString());
+    }
+
+    @Test
+    @DisplayName("Eval equals")
+    void evalEquals() {
+        Main.main(new String[]{"test/Test13.mid"});
+        assertEquals("2.0", outputStreamCaptor.toString());
+    }
+
+    @Test
+    @DisplayName("Eval greater than")
+    void evalGreaterThan() {
+        Main.main(new String[]{"test/Test14.mid"});
+        assertEquals("3.0", outputStreamCaptor.toString());
     }
 }
