@@ -1,14 +1,12 @@
 package org.hazelv.chime;
 import javax.sound.midi.*;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class Main {
     public static List<NoteEvent> noteEvents;
-    public static List<List<NoteName>> chords;
+    public static HashMap<List<NoteName>, Chord> chordMap;
+    public static List<Chord> chords;
     public static int bpm;
     public static Song song;
     public static boolean debug = false;
@@ -48,10 +46,10 @@ public class Main {
                     for (NoteEvent event : timedEvents) {
                             notes.add(NoteName.values()[event.getNoteNumber()]);
                     }
-                    chords.add(notes);
+                    //chords.add(notes);
                 }
             }
-            song = songFromChords(chords);
+            //song = songFromChords(chords);
             song.parse();
             song.run();
         } catch (Exception e) {
@@ -59,7 +57,7 @@ public class Main {
         }
     }
 
-    public static Song songFromChords(List<List<NoteName>> chords) {
-        return new Song(chords, debug);
-    }
+    //public static Song songFromChords(List<Chord> chords) {
+        //return new Song(chords, debug);
+    //}
 }

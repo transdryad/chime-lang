@@ -3,6 +3,8 @@ A primitive interpreted language from midi files (known to fully support MuseSco
 Language Reference: (note that all sharps are referred to by their enharmonic equivalent - so instead of C#5, Db5)
 
 Chords are considered to be any notes that begin at the exact same time, not notes that are playing together eventually.
+Chords can be spread across different tracks and instruments. Duplicate notes in a chord are ignored.
+
 For a file to be considered a chime program, it must contain a primitive 'header' with the following chords:
 C5, E5, G5, C3, E3, G3, followed by C7, E7, G7, C3, Eb3, G3. No other notes may play during the header.
 

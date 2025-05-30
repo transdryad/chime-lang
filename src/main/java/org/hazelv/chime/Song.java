@@ -1,6 +1,7 @@
 package org.hazelv.chime;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.hazelv.chime.NoteName.*;
 
@@ -10,6 +11,7 @@ public class Song {
     public List<Stack<Float>> data;
     public float currentValue = 0.0f;
     public boolean debug;
+    public int index = 0;
 
     public Song(List<List<NoteName>> chords, boolean debug) {
         this.chords = chords;
@@ -22,8 +24,9 @@ public class Song {
     }
 
     public void parse() {
-        int index = 0;
+        index = 0;
         for (List<NoteName> chord : chords) {
+            chord = chord.stream().distinct().collect(Collectors.toList());
             chord.sort(Comparator.comparingInt(NoteName::ordinal));
             if (Objects.equals(chord, new ArrayList<>(Arrays.asList(C3, E3, G3, C5, E5, G5)))) {
                 code.add(ChordName.START);
@@ -77,37 +80,37 @@ public class Song {
             throw new IllegalArgumentException("Invalid 'header' for chime file. (Are you sure this is a program?)");
         }
         //System.out.println(code);
-        for (int i = 0; i < code.size(); i++) {
-            Object instruction = code.get(i);
+        for (index = 0; index < code.size(); index++) {
+            Object instruction = code.get(index);
             //System.out.println(instruction);
             if (instruction.equals(ChordName.START) || instruction.equals(ChordName.START2)) {
-                if (i > 1) {
+                if (index > 1) {
                     throw new IllegalArgumentException("Start sequence repeated?");
                 }
-                i++;
+                index++;
                 continue;
             } else if (instruction instanceof Integer || instruction instanceof Float) {
-                throw new IllegalArgumentException("Literal before instruction at chord: " + i + ". Bad jump?");
+                throw new IllegalArgumentException("Literal before instruction at chord: " + index + ". Bad jump?");
             }
-            float[] arguments = getArguments(i);
+            float[] arguments = getArguments(index);
             switch (instruction) {
                 case ChordName.ADD:
                     currentValue = arguments[0] + arguments[1];
-                    i = i + 2;
+                    index = index + 2;
                     break;
                 case ChordName.SUBTRACT:
                     //System.out.println("Subtracting: " + arguments[0] + " - " + arguments[1]);
                     currentValue = arguments[0] - arguments[1];
                     //System.out.println(currentValue);
-                    i = i + 2;
+                    index = index + 2;
                     break;
                 case ChordName.MULTIPLY:
                     currentValue = arguments[0] * arguments[1];
-                    i = i + 2;
+                    index = index + 2;
                     break;
                 case ChordName.DIVIDE:
                     currentValue = arguments[0] / arguments[1];
-                    i = i + 2;
+                    index = index + 2;
                     break;
                 case ChordName.PRINT:
                     //System.out.println("Printing");
@@ -120,18 +123,18 @@ public class Song {
                         }
                     }
                     data.get((int)arguments[0]).push(currentValue);
-                    i++;
+                    index++;
                     break;
                 case ChordName.POP:
                     currentValue = data.get((int)arguments[0]).pop();
-                    i++;
+                    index++;
                     break;
                 case ChordName.INPUT:
                     currentValue = (float)System.in.read();
                     break;
                 case ChordName.HOLD:
                     currentValue = arguments[0];
-                    i++;
+                    index++;
                     break;
                 case ChordName.PRINT_CHAR:
                     System.out.print((char)currentValue);
@@ -147,22 +150,22 @@ public class Song {
                     } else if (arguments[0] > arguments[1]) {
                         currentValue = 3;
                     }
-                    i = i + 2;
+                    index = index + 2;
                     break;
                 case ChordName.JUMP: // chord count starts at 0
-                    if (code.size() <= arguments[0]) {throw new IndexOutOfBoundsException("Jump index out of range for jump from chord: " + i + " to chord: " + arguments[0]);}
-                    i = (int)(arguments[0] - 1); // subtract one as for loop will add one at the end
+                    if (code.size() <= arguments[0]) {throw new IndexOutOfBoundsException("Jump index out of range for jump from chord: " + index + " to chord: " + arguments[0]);}
+                    index = (int)(arguments[0] - 1); // subtract one as for loop will add one at the end
                     break;
                 case ChordName.JUMP_IF: // first argument is jump chord, second argument is wanted condition from eval or otherwise
-                    if (code.size() <= arguments[0]) {throw new IndexOutOfBoundsException("Jump index out of range for jump from chord: " + i + " to chord: " + arguments[0]);}
+                    if (code.size() <= arguments[0]) {throw new IndexOutOfBoundsException("Jump index out of range for jump from chord: " + index + " to chord: " + arguments[0]);}
                     if (currentValue == arguments[1]) {
-                        i = (int)(arguments[0] - 1);
+                        index = (int)(arguments[0] - 1);
                     } else {
-                        i = i + 2;
+                        index = index + 2;
                     }
                     break;
                 default:
-                    throw new IllegalStateException("Unknown Instruction: " + instruction + " at chord: " + i);
+                    throw new IllegalStateException("Unknown Instruction: " + instruction + " at chord: " + index);
             }
         }
 
