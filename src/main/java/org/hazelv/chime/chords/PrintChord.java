@@ -7,7 +7,7 @@ import static org.hazelv.chime.Main.song;
 public class PrintChord implements Chord {
     @Override
     public void execute() {
-        System.out.println(song.currentValue);
+        System.out.print(song.currentValue);
     }
 
     @Override

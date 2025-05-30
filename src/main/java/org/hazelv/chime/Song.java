@@ -1,6 +1,7 @@
 package org.hazelv.chime;
 import org.hazelv.chime.chords.*;
 
+import java.io.IOException;
 import java.util.*;
 
 public class Song {
@@ -20,11 +21,11 @@ public class Song {
         }
     }
 
-    public void run() {
+    public void run() throws IOException {
         if (debug) {
             System.out.println(chords);
         }
-        if (!chords.getFirst().equals(new StartChord()) || !chords.get(1).equals(new Start2Chord())) {
+        if (!(chords.getFirst() instanceof StartChord) || !(chords.get(1) instanceof Start2Chord)) {
             throw new IllegalArgumentException("Invalid 'header' for chime file. (Are you sure this is a program?)");
         }
         while (index < chords.size()) {
