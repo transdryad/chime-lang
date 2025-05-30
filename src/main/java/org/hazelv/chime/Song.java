@@ -31,6 +31,13 @@ public class Song {
         while (index < chords.size()) {
             Chord instruction = chords.get(index);
             arguments = getArguments(index);
+            if (instruction instanceof StartChord || instruction instanceof Start2Chord) {
+                if (index > 1) {
+                    throw new IllegalArgumentException("Start sequence repeated?");
+                }
+            } else if (instruction instanceof LiteralChord) {
+                throw new IllegalArgumentException("Literal before instruction at chord: " + index + ". Bad jump?");
+            }
             instruction.execute();
             instruction.increment();
         }
@@ -45,17 +52,17 @@ public class Song {
         if (index == (chords.size() - 1)) { // end of list
             return new float[]{};
         } else if (index == (chords.size() - 2)) { // one arg until end
-            if (chords.get(index + 1).equals(new CurrentValChord())) {
+            if (chords.get(index + 1) instanceof CurrentValChord) {
                 return new float[]{currentValue};
             } else {
                 return new float[]{getArgument(index + 1)};
             }
         } else if (index <= (chords.size() - 3)) {
-            if (chords.get(index + 1).equals(new CurrentValChord())) {
+            if (chords.get(index + 1) instanceof CurrentValChord) {
                 return new float[]{currentValue, getArgument(index + 2)};
-            } else if (chords.get(index + 2).equals(new CurrentValChord())) {
+            } else if (chords.get(index + 2) instanceof CurrentValChord) {
                 return new float[]{getArgument(index + 1), currentValue};
-            } else if (chords.get(index + 1).equals(new CurrentValChord()) && chords.get(index + 2).equals(new CurrentValChord())) {
+            } else if (chords.get(index + 1) instanceof CurrentValChord && chords.get(index + 2) instanceof CurrentValChord) {
                 return new float[]{currentValue, currentValue};
             } else {
                 return new float[]{getArgument(index + 1), getArgument(index + 2)};
