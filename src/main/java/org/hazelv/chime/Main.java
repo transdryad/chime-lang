@@ -7,9 +7,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.hazelv.chime.NoteName.*;
-import static org.hazelv.chime.NoteName.C7;
-import static org.hazelv.chime.NoteName.E7;
-import static org.hazelv.chime.NoteName.G7;
 
 public class Main {
     public static List<NoteEvent> noteEvents;
@@ -67,23 +64,29 @@ public class Main {
                     }
                 }
             }
-            //song = songFromChords(chords);
-            song.parse();
+            song = songFromChords(chords);
             song.run();
         } catch (Exception e) {
             System.err.println("Error: " + e.getMessage());
         }
     }
 
-    //public static Song songFromChords(List<Chord> chords) {
-        //return new Song(chords, debug);
-    //}
+    public static Song songFromChords(List<Chord> chords) {
+        return new Song(chords, debug);
+    }
 
     public static void registerDefaultChords() {
         registerChord(new ArrayList<>(Arrays.asList(C3, Eb3, G3, C7, E7, G7)), StartChord.class);
-        registerChord(new ArrayList<>(Arrays.asList(D5, Gb5, A5)), Start2Chord.class);
+        registerChord(new ArrayList<>(Arrays.asList(C3, Eb3, G3, C7, E7, G7)), Start2Chord.class);
         registerChord(new ArrayList<>(Arrays.asList(D5, Gb5, A5)), AddChord.class);
         registerChord(new ArrayList<>(Arrays.asList(E5, Ab5, B5)), SubtractChord.class);
+        registerChord(new ArrayList<>(Arrays.asList(F5, A5, C6)), MultiplyChord.class);
+        registerChord(new ArrayList<>(Arrays.asList(G5, B5, D6)), DivideChord.class);
+        registerChord(new ArrayList<>(Arrays.asList(A5, Db6, E6)), PrintChord.class);
+        registerChord(new ArrayList<>(Arrays.asList(B5, Eb6, Gb6)), PushChord.class);
+        registerChord(new ArrayList<>(Arrays.asList(Bb5, D6, F6)), PopChord.class);
+        registerChord(new ArrayList<>(Arrays.asList(Db5, F5, Ab5)), InputChord.class);
+        registerChord(new ArrayList<>(Arrays.asList(Eb5, G5, Bb5)), HoldChord.class);
     }
 
     public static void registerChord(List<NoteName> notes, Class<?> chordType) {

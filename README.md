@@ -78,3 +78,99 @@ code.add((float)chord.getFirst().ordinal());
 } else {
 throw new IllegalArgumentException("Unknown Chord: " + chord + " at index: " + index);
 }
+
+run func old
+if (debug) {
+System.out.println(chords);
+}
+if (!chords.getFirst().equals(new StartChord()) || !chords.get(1).equals(new Start2Chord())) {
+//System.out.println(chords);
+throw new IllegalArgumentException("Invalid 'header' for chime file. (Are you sure this is a program?)");
+}
+//System.out.println(code);
+for (index = 0; index < code.size(); index++) {
+Object instruction = code.get(index);
+//System.out.println(instruction);
+if (instruction.equals(ChordName.START) || instruction.equals(ChordName.START2)) {
+if (index > 1) {
+throw new IllegalArgumentException("Start sequence repeated?");
+}
+index++;
+continue;
+} else if (instruction instanceof Integer || instruction instanceof Float) {
+throw new IllegalArgumentException("Literal before instruction at chord: " + index + ". Bad jump?");
+}
+arguments = getArguments(index);
+switch (instruction) {
+case ChordName.ADD:
+currentValue = arguments[0] + arguments[1];
+index = index + 2;
+break;
+case ChordName.SUBTRACT:
+//System.out.println("Subtracting: " + arguments[0] + " - " + arguments[1]);
+currentValue = arguments[0] - arguments[1];
+//System.out.println(currentValue);
+index = index + 2;
+break;
+case ChordName.MULTIPLY:
+currentValue = arguments[0] * arguments[1];
+index = index + 2;
+break;
+case ChordName.DIVIDE:
+currentValue = arguments[0] / arguments[1];
+index = index + 2;
+break;
+case ChordName.PRINT:
+//System.out.println("Printing");
+System.out.print(currentValue);
+break;
+case ChordName.PUSH:
+if (data.size() < arguments[0]) {
+for (int ii = 0; ii < arguments[0]; ii++) {
+data.add(new Stack<>());
+}
+}
+data.get((int)arguments[0]).push(currentValue);
+index++;
+break;
+case ChordName.POP:
+currentValue = data.get((int)arguments[0]).pop();
+index++;
+break;
+case ChordName.INPUT:
+currentValue = (float)System.in.read();
+break;
+case ChordName.HOLD:
+currentValue = arguments[0];
+index++;
+break;
+case ChordName.PRINT_CHAR:
+System.out.print((char)currentValue);
+break;
+case ChordName.PRINTLN:
+System.out.println();
+break;
+case ChordName.EVAL:
+if (arguments[0] < arguments[1]) {
+currentValue = 1;
+} else if (arguments[0] == arguments[1]) {
+currentValue = 2;
+} else if (arguments[0] > arguments[1]) {
+currentValue = 3;
+}
+index = index + 2;
+break;
+case ChordName.JUMP: // chord count starts at 0
+if (code.size() <= arguments[0]) {throw new IndexOutOfBoundsException("Jump index out of range for jump from chord: " + index + " to chord: " + arguments[0]);}
+index = (int)(arguments[0] - 1); // subtract one as for loop will add one at the end
+break;
+case ChordName.JUMP_IF: // first argument is jump chord, second argument is wanted condition from eval or otherwise
+if (code.size() <= arguments[0]) {throw new IndexOutOfBoundsException("Jump index out of range for jump from chord: " + index + " to chord: " + arguments[0]);}
+if (currentValue == arguments[1]) {
+index = (int)(arguments[0] - 1);
+} else {
+index = index + 2;
+}
+break;
+default:
+throw new IllegalStateException("Unknown Instruction: " + instruction + " at chord: " + index);
