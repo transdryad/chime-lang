@@ -1,15 +1,18 @@
 package org.hazelv.chime.chords;
 
 import org.hazelv.chime.Chord;
-import org.hazelv.chime.Main;
 
-public class StartChord implements Chord {
+public class LiteralChord implements Chord {
+    public final float value;
+
+    public LiteralChord(float value) {
+        this.value = value;
+    }
     @Override
     public void execute() {
     }
 
     @Override
     public void increment() {
-        Main.song.index++;
     }
 }

@@ -12,6 +12,7 @@ public class Song {
     public float currentValue = 0.0f;
     public boolean debug;
     public int index = 0;
+    public float[] arguments;
 
     public Song(List<List<NoteName>> chords, boolean debug) {
         this.chords = chords;
@@ -92,7 +93,7 @@ public class Song {
             } else if (instruction instanceof Integer || instruction instanceof Float) {
                 throw new IllegalArgumentException("Literal before instruction at chord: " + index + ". Bad jump?");
             }
-            float[] arguments = getArguments(index);
+            arguments = getArguments(index);
             switch (instruction) {
                 case ChordName.ADD:
                     currentValue = arguments[0] + arguments[1];

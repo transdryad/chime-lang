@@ -37,3 +37,44 @@ The tested column indicates whether a test has been written for a given feature.
 | JUMP        | Db minor          | Db5, E5, Ab5            |    1     |   x    | Jump to the chord index from the first argument.                                | Indices start at 0 for the first START in the 'header'. |
 | JUMP_IF     | D minor           | D5, F5, A5              |    2     |   x    | Jump to the first argument index if currentVal is equal to the second argument. | ^                                                       |
 | CURRENT_VAL | Eb minor          | Eb5, Gb5, Bb5           |   N/A    |   x    | Refer to currentVal to pass it as an argument.                                  |                                                         | 
+
+copied code from song parse method that is being changed, but I need the reference:
+if (Objects.equals(chord, new ArrayList<>(Arrays.asList(C3, E3, G3, C5, E5, G5)))) {
+code.add(ChordName.START);
+} else if (Objects.equals(chord, new ArrayList<>(Arrays.asList(C3, Eb3, G3, C7, E7, G7)))) {
+code.add(ChordName.START2);
+} else if (Objects.equals(chord, new ArrayList<>(Arrays.asList(D5, Gb5, A5)))) {
+code.add(ChordName.ADD);
+} else if (Objects.equals(chord, new ArrayList<>(Arrays.asList(E5, Ab5, B5)))) {
+code.add(ChordName.SUBTRACT);
+} else if (Objects.equals(chord, new ArrayList<>(Arrays.asList(F5, A5, C6)))) {
+code.add(ChordName.MULTIPLY);
+} else if (Objects.equals(chord, new ArrayList<>(Arrays.asList(G5, B5, D6)))) {
+code.add(ChordName.DIVIDE);
+} else if (Objects.equals(chord, new ArrayList<>(Arrays.asList(A5, Db6, E6)))) {
+code.add(ChordName.PRINT);
+} else if (Objects.equals(chord, new ArrayList<>(Arrays.asList(B5, Eb6, Gb6)))) {
+code.add(ChordName.PUSH);
+} else if (Objects.equals(chord, new ArrayList<>(Arrays.asList(Bb5, D6, F6)))) {
+code.add(ChordName.POP);
+} else if (Objects.equals(chord, new ArrayList<>(Arrays.asList(Db5, F5, Ab5)))) {
+code.add(ChordName.INPUT);
+} else if (Objects.equals(chord, new ArrayList<>(Arrays.asList(Eb5, G5, Bb5)))) {
+code.add(ChordName.HOLD);
+} else if (Objects.equals(chord, new ArrayList<>(Arrays.asList(Gb5, Bb5, Db6)))) {
+code.add(ChordName.PRINT_CHAR);
+} else if (Objects.equals(chord, new ArrayList<>(Arrays.asList(Ab5, C6, Eb6)))) {
+code.add(ChordName.PRINTLN);
+} else if (Objects.equals(chord, new ArrayList<>(Arrays.asList(C5, Eb5, G5)))) {
+code.add(ChordName.EVAL);
+} else if (Objects.equals(chord, new ArrayList<>(Arrays.asList(Db5, E5, Ab5)))) {
+code.add(ChordName.JUMP);
+} else if (Objects.equals(chord, new ArrayList<>(Arrays.asList(D5, F5, A5)))) {
+code.add(ChordName.JUMP_IF);
+} else if (Objects.equals(chord, new ArrayList<>(Arrays.asList(Eb5, Gb5, Bb5)))) {
+code.add(ChordName.CURRENT_VALUE);
+} else if (chord.size() == 1) {
+code.add((float)chord.getFirst().ordinal());
+} else {
+throw new IllegalArgumentException("Unknown Chord: " + chord + " at index: " + index);
+}
