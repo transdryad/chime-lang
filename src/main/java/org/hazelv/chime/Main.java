@@ -3,6 +3,7 @@ import org.hazelv.chime.chords.*;
 
 import javax.sound.midi.*;
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -32,38 +33,11 @@ public class Main {
             //File file = new File("test/Test2.mid");
             Sequence sequence = MidiSystem.getSequence(file);
             long res = sequence.getTickLength();
-            for (Track track : sequence.getTracks()) {
-                for (int i = 0; i < track.size(); i++) {
-                    MidiEvent event = track.get(i);
-                    MidiMessage message = event.getMessage();
-                    NoteEvent note = new NoteEvent(event, message);
-                    if (note.action != -1) {
-                        noteEvents.add(note);
-                    }
-                }
-            }
+            getMidiEvents(sequence);
             noteEvents.sort(Comparator.comparingInt(NoteEvent::getTimestamp));
             bpm = noteEvents.getFirst().bpm;
             //System.out.println("bpm: "+bpm);
-            for (int i = 0; i < res; i++) {
-                int finalI = i;
-                List<NoteEvent> timedEvents = noteEvents.stream().filter(item -> item.getTimestamp() == finalI && item.action != 0).toList();
-                if (!timedEvents.isEmpty()) {
-                    List<NoteName> notes = new ArrayList<>();
-                    for (NoteEvent event : timedEvents) {
-                            notes.add(NoteName.values()[event.getNoteNumber()]);
-                    }
-                    notes= notes.stream().distinct().collect(Collectors.toList());
-                    notes.sort(Comparator.comparingInt(NoteName::ordinal));
-                    if (chordMap.containsKey(notes)) {
-                        chords.add((Chord)chordMap.get(notes).getDeclaredConstructor().newInstance());
-                    } else if (notes.size() == 1) {
-                        chords.add(new LiteralChord(notes.getFirst().ordinal()));
-                    } else {
-                        throw new IllegalArgumentException("Unknown Chord: " + notes + " at index: " + i);
-                    }
-                }
-            }
+            getChords(res);
             song = songFromChords(chords);
             song.run();
         } catch (Exception e) {
@@ -97,5 +71,40 @@ public class Main {
 
     public static void registerChord(List<NoteName> notes, Class<?> chordType) {
         chordMap.put(notes, chordType);
+    }
+
+    public static void getMidiEvents(Sequence sequence) {
+        for (Track track : sequence.getTracks()) {
+            for (int i = 0; i < track.size(); i++) {
+                MidiEvent event = track.get(i);
+                MidiMessage message = event.getMessage();
+                NoteEvent note = new NoteEvent(event, message);
+                if (note.action != -1) {
+                    noteEvents.add(note);
+                }
+            }
+        }
+    }
+
+    public static void getChords(long res) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        for (int i = 0; i < res; i++) {
+            int finalI = i;
+            List<NoteEvent> timedEvents = noteEvents.stream().filter(item -> item.getTimestamp() == finalI && item.action != 0).toList();
+            if (!timedEvents.isEmpty()) {
+                List<NoteName> notes = new ArrayList<>();
+                for (NoteEvent event : timedEvents) {
+                    notes.add(NoteName.values()[event.getNoteNumber()]);
+                }
+                notes= notes.stream().distinct().collect(Collectors.toList());
+                notes.sort(Comparator.comparingInt(NoteName::ordinal));
+                if (chordMap.containsKey(notes)) {
+                    chords.add((Chord)chordMap.get(notes).getDeclaredConstructor().newInstance());
+                } else if (notes.size() == 1) {
+                    chords.add(new LiteralChord(notes.getFirst().ordinal()));
+                } else {
+                    throw new IllegalArgumentException("Unknown Chord: " + notes + " at index: " + i);
+                }
+            }
+        }
     }
 }
