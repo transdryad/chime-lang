@@ -7,6 +7,7 @@ import org.tomlj.TomlParseResult;
 import javax.sound.midi.*;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.*;
@@ -37,50 +38,14 @@ public class Main {
         try {
             String configPath = System.getenv("CHIME_CONFIG");
             if (configPath == null || configPath.isEmpty()) {
-                configPath = "1/config.toml";
+                configPath = "config.toml";
             }
             File configFile = new File(configPath);
             if (configFile.exists()) {
                 TomlParseResult result = Toml.parse(configFile.toPath());
                 result.errors().forEach(error -> System.err.println(error.toString()));
                 TomlArray resultArray = result.getArray("Libraries.used");
-                URL[] urls = new URL[resultArray.size()];
-                List<String> classNames = new ArrayList<>();
-                List<String> mains = new ArrayList<>();
-                for (int i = 0; i < resultArray.size(); i++) {
-                    String fileName = resultArray.getString(i);
-                    JarFile libraryFile = new JarFile(fileName);
-                    FileInputStream fis = new FileInputStream(fileName);
-                    JarInputStream jarStream = new JarInputStream(fis);
-                    Manifest manifest = jarStream.getManifest();
-                    if (manifest != null) {
-                        Attributes attributes = manifest.getMainAttributes();
-                        String mc = attributes.getValue("Main-Class");
-                        mains.add(mc);
-                    }
-                    jarStream.close();
-                    fis.close();
-                    URL url = new File(resultArray.getString(i)).toURI().toURL();
-                    urls[i] = url;
-                    Enumeration<JarEntry> e = libraryFile.entries();
-                    while (e.hasMoreElements()) {
-                        JarEntry je = e.nextElement();
-                        if(je.isDirectory() || !je.getName().endsWith(".class")){
-                            continue;
-                        }
-                        String className = je.getName().substring(0,je.getName().length()-".class".length());
-                        className = className.replace('/', '.');
-                        classNames.add(className);
-                    }
-                }
-                DynamicClassLoader cl = new DynamicClassLoader(urls, ClassLoader.getSystemClassLoader());
-                for (String className : classNames) {
-                    cl.loadClass(className);
-                }
-                for (String main : mains) {
-                    Class<?> c = Class.forName(main);
-                    c.getMethod("main", String[].class).invoke(null, (Object) new String[]{});
-                }
+                loadLibraries(resultArray);
             }
             File file = new File(args[0]);
             //File file = new File("test/Test2.mid");
@@ -158,6 +123,46 @@ public class Main {
                     throw new IllegalArgumentException("Unknown Chord: " + notes + " at index: " + i);
                 }
             }
+        }
+    }
+
+    public static void loadLibraries(TomlArray resultArray) throws IOException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        URL[] urls = new URL[resultArray.size()];
+        List<String> classNames = new ArrayList<>();
+        List<String> mains = new ArrayList<>();
+        for (int i = 0; i < resultArray.size(); i++) {
+            String fileName = resultArray.getString(i);
+            JarFile libraryFile = new JarFile(fileName);
+            FileInputStream fis = new FileInputStream(fileName);
+            JarInputStream jarStream = new JarInputStream(fis);
+            Manifest manifest = jarStream.getManifest();
+            if (manifest != null) {
+                Attributes attributes = manifest.getMainAttributes();
+                String mc = attributes.getValue("Main-Class");
+                mains.add(mc);
+            }
+            jarStream.close();
+            fis.close();
+            URL url = new File(resultArray.getString(i)).toURI().toURL();
+            urls[i] = url;
+            Enumeration<JarEntry> e = libraryFile.entries();
+            while (e.hasMoreElements()) {
+                JarEntry je = e.nextElement();
+                if(je.isDirectory() || !je.getName().endsWith(".class")){
+                    continue;
+                }
+                String className = je.getName().substring(0,je.getName().length()-".class".length());
+                className = className.replace('/', '.');
+                classNames.add(className);
+            }
+        }
+        DynamicClassLoader cl = new DynamicClassLoader(urls, ClassLoader.getSystemClassLoader());
+        for (String className : classNames) {
+            cl.loadClass(className);
+        }
+        for (String main : mains) {
+            Class<?> c = Class.forName(main);
+            c.getMethod("main", String[].class).invoke(null, (Object) new String[]{});
         }
     }
 }
