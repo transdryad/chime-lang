@@ -37,7 +37,7 @@ public class Main {
         try {
             String configPath = System.getenv("CHIME_CONFIG");
             if (configPath == null || configPath.isEmpty()) {
-                configPath = "config.toml";
+                configPath = "1/config.toml";
             }
             File configFile = new File(configPath);
             if (configFile.exists()) {
