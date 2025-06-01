@@ -18,6 +18,11 @@ The GPL also applies to the files within the test directory.
 
 Download the latest jar file from releases.
 
+ALternatively, run:
+```code
+./gradlew shadowJar
+```
+
 ## Usage
 
 ```code
