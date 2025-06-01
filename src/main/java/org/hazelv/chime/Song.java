@@ -44,6 +44,7 @@ public class Song {
                     System.out.print(chord.getClass().getName().substring(chord.getClass().getName().lastIndexOf(".") + 1) + ", ");
                 }
             }
+            System.out.println();
         }
         if (!(chords.getFirst() instanceof StartChord) || !(chords.get(1) instanceof Start2Chord)) {
             throw new IllegalArgumentException("Invalid 'header' for chime file. (Are you sure this is a program?)");
