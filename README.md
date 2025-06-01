@@ -21,7 +21,7 @@ Download the latest jar file from releases.
 ## Usage
 
 ```code
-java --jar chime-lang-1.0-SNAPSHOT-all.jar <yourfile.mid>
+java --jar chime-lang-1.0-all.jar <yourfile.mid>
 ```
 Pass --debug after the file name to print what chime thinks the file contains.
 
