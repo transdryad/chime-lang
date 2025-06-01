@@ -1,6 +1,8 @@
 # **Chime-Lang**
 A primitive interpreted language from midi files (known to fully support MuseScore midi export).
 
+Supports java 21 and above.
+
 Copyright 2025 Hazel Viswanath \<viswanath.hazel@gmail.com>.
 Licensed under GPL 3 or above.
 
@@ -12,8 +14,19 @@ You should have received a copy of the GNU General Public License along with Chi
 
 The GPL also applies to the files within the test directory.
 
+## Installation
+
+Download the latest jar file from releases.
+
+## Usage
+
+```code
+java --jar chime-lang-1.0-SNAPSHOT-all.jar <yourfile.mid>
+```
+Pass --debug after the file name to print what chime thinks the file contains.
+
 ## Language Reference:
-(note that all sharps are referred to by their enharmonic equivalent - so instead of C#5, Db5)
+(note that all sharps are referred to by their enharmonic equivalent - so instead of C#5, Db5). Don't @ me about technically incorrect chords.
 
 Chords are considered to be any notes that begin at the exact same time, not notes that are playing together eventually.
 Chords can be spread across different tracks and instruments. Duplicate notes in a chord are ignored.
@@ -51,3 +64,14 @@ The tested column indicates whether a test has been written for a given feature.
 | JUMP_IF     | D minor           | D5, F5, A5              |    2     |   x    | Jump to the first argument index if currentVal is equal to the second argument. | ^                                                       |
 | CURRENT_VAL | Eb minor          | Eb5, Gb5, Bb5           |   N/A    |   x    | Refer to currentVal to pass it as an argument.                                  |                                                         | 
 
+## Libraries/Extensions
+
+Chime-Lang is a infinitely extensible engine. To add instructions, make a jar that calls org.hazelv.chime.Main.registerChord() in the entrypoint function. DO NOT MAKE A FAT JAR.
+Make a class that implements org.hazelv.chime.Chord and implement both methods.
+The registerChord() method takes a List of NoteNames (in ascending order) and your '<new chord>.class'.
+See the chord package for chords, and Main.java for a registerChord example (in registerDefaultChords).
+
+To use a library, make a config.toml file and put the library jar next to it.
+See test.config.toml for how to include a library.
+
+On execution, chime will call the jar's main method of its main class with no arguments.
