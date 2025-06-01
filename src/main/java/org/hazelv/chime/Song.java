@@ -37,7 +37,13 @@ public class Song {
 
     public void run() throws IOException {
         if (debug) {
-            System.out.println(chords);
+            for (Chord chord : chords) {
+                if (chord instanceof LiteralChord) {
+                    System.out.print(((LiteralChord) chord).value + ", ");
+                } else {
+                    System.out.print(chord.getClass().getName().substring(chord.getClass().getName().lastIndexOf(".") + 1) + ", ");
+                }
+            }
         }
         if (!(chords.getFirst() instanceof StartChord) || !(chords.get(1) instanceof Start2Chord)) {
             throw new IllegalArgumentException("Invalid 'header' for chime file. (Are you sure this is a program?)");
