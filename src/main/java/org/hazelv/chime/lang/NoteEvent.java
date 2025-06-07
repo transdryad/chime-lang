@@ -12,7 +12,7 @@
 
 // You should have received a copy of the GNU General Public License along with Chime-Lang. If not, see <https://www.gnu.org/licenses/>.
 
-package org.hazelv.chime;
+package org.hazelv.chime.lang;
 import javax.sound.midi.MetaMessage;
 import javax.sound.midi.MidiEvent;
 import javax.sound.midi.MidiMessage;

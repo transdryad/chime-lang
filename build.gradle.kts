@@ -46,6 +46,6 @@ tasks.test {
 
 tasks.jar {
     manifest {
-        attributes("Main-Class" to "org.hazelv.chime.Main")
+        attributes("Main-Class" to "org.hazelv.chime.lang.Main")
     }
 }

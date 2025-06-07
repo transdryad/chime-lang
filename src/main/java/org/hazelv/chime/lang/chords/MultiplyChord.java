@@ -12,16 +12,16 @@
 
 // You should have received a copy of the GNU General Public License along with Chime-Lang. If not, see <https://www.gnu.org/licenses/>.
 
-package org.hazelv.chime.chords;
+package org.hazelv.chime.lang.chords;
 
-import org.hazelv.chime.Chord;
+import org.hazelv.chime.lang.Chord;
 
-import static org.hazelv.chime.Main.song;
+import static org.hazelv.chime.lang.Main.song;
 
-public class SubtractChord implements Chord {
+public class MultiplyChord implements Chord {
     @Override
     public void execute() {
-        song.currentValue = song.arguments[0] - song.arguments[1];
+        song.currentValue = song.arguments[0] * song.arguments[1];
     }
 
     @Override

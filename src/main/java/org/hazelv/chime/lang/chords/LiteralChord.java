@@ -12,11 +12,16 @@
 
 // You should have received a copy of the GNU General Public License along with Chime-Lang. If not, see <https://www.gnu.org/licenses/>.
 
-package org.hazelv.chime.chords;
+package org.hazelv.chime.lang.chords;
 
-import org.hazelv.chime.Chord;
+import org.hazelv.chime.lang.Chord;
 
-public class CurrentValChord implements Chord {
+public class LiteralChord implements Chord {
+    public final float value;
+
+    public LiteralChord(float value) {
+        this.value = value;
+    }
     @Override
     public void execute() {
     }

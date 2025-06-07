@@ -72,7 +72,7 @@ The tested column indicates whether a test has been written for a given feature.
 ## Libraries/Extensions
 
 Chime-Lang is a infinitely extensible engine. To add instructions, make a jar that calls org.hazelv.chime.Main.registerChord() in the entrypoint function. DO NOT MAKE A FAT JAR.
-Make a class that implements org.hazelv.chime.Chord and implement both methods.
+Make a class that implements org.hazelv.chime.lang.Chord and implement both methods.
 The registerChord() method takes a List of NoteNames (in ascending order) and your '<new chord>.class'.
 See the chord package for chords, and Main.java for a registerChord example (in registerDefaultChords).
 

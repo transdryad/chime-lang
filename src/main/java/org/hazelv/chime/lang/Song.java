@@ -12,8 +12,11 @@
 
 // You should have received a copy of the GNU General Public License along with Chime-Lang. If not, see <https://www.gnu.org/licenses/>.
 
-package org.hazelv.chime;
-import org.hazelv.chime.chords.*;
+package org.hazelv.chime.lang;
+import org.hazelv.chime.lang.chords.CurrentValChord;
+import org.hazelv.chime.lang.chords.LiteralChord;
+import org.hazelv.chime.lang.chords.Start2Chord;
+import org.hazelv.chime.lang.chords.StartChord;
 
 import java.io.IOException;
 import java.util.*;

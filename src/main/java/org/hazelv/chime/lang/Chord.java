@@ -12,20 +12,14 @@
 
 // You should have received a copy of the GNU General Public License along with Chime-Lang. If not, see <https://www.gnu.org/licenses/>.
 
-package org.hazelv.chime.chords;
+package org.hazelv.chime.lang;
 
-import org.hazelv.chime.Chord;
+import java.io.IOException;
 
-import static org.hazelv.chime.Main.song;
+public interface Chord {
 
-public class MultiplyChord implements Chord {
-    @Override
-    public void execute() {
-        song.currentValue = song.arguments[0] * song.arguments[1];
-    }
+    void execute() throws IOException;
+    void increment();
+    
 
-    @Override
-    public void increment() {
-        song.index = song.index + 3;
-    }
 }

@@ -12,8 +12,8 @@
 
 // You should have received a copy of the GNU General Public License along with Chime-Lang. If not, see <https://www.gnu.org/licenses/>.
 
-package org.hazelv.chime;
-import org.hazelv.chime.chords.*;
+package org.hazelv.chime.lang;
+import org.hazelv.chime.lang.chords.*;
 import org.tomlj.Toml;
 import org.tomlj.TomlArray;
 import org.tomlj.TomlParseResult;
@@ -28,7 +28,7 @@ import java.util.*;
 import java.util.jar.*;
 import java.util.stream.Collectors;
 
-import static org.hazelv.chime.NoteName.*;
+import static org.hazelv.chime.lang.NoteName.*;
 
 public class Main {
     public static List<NoteEvent> noteEvents;

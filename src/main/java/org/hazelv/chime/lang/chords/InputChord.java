@@ -12,28 +12,21 @@
 
 // You should have received a copy of the GNU General Public License along with Chime-Lang. If not, see <https://www.gnu.org/licenses/>.
 
-package org.hazelv.chime.chords;
+package org.hazelv.chime.lang.chords;
 
-import org.hazelv.chime.Chord;
+import org.hazelv.chime.lang.Chord;
 
 import java.io.IOException;
 
-import static org.hazelv.chime.Main.song;
+import static org.hazelv.chime.lang.Main.song;
 
-public class EvalChord implements Chord {
+public class InputChord implements Chord {
     @Override
     public void execute() throws IOException {
-        if (song.arguments[0] < song.arguments[1]) {
-            song.currentValue = 1;
-        } else if (song.arguments[0] == song.arguments[1]) {
-            song.currentValue = 2;
-        } else if (song.arguments[0] > song.arguments[1]) {
-            song.currentValue = 3;
-        }
+        song.currentValue = (float)System.in.read();
     }
-
     @Override
     public void increment() {
-        song.index = song.index + 3;
+        song.index++;
     }
 }

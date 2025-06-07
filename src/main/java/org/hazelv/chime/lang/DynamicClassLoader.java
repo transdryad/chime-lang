@@ -12,18 +12,17 @@
 
 // You should have received a copy of the GNU General Public License along with Chime-Lang. If not, see <https://www.gnu.org/licenses/>.
 
-package org.hazelv.chime.chords;
+package org.hazelv.chime.lang;
 
-import org.hazelv.chime.Chord;
-import org.hazelv.chime.Main;
+import java.net.URL;
+import java.net.URLClassLoader;
 
-public class StartChord implements Chord {
-    @Override
-    public void execute() {
+public class DynamicClassLoader extends URLClassLoader {
+    public DynamicClassLoader(URL[] urls, ClassLoader parent) {
+        super(urls, parent);
     }
 
-    @Override
-    public void increment() {
-        Main.song.index++;
+    public void addURL(URL url) {
+        super.addURL(url);
     }
 }
