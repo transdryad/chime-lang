@@ -12,9 +12,9 @@
 
 // You should have received a copy of the GNU General Public License along with Chime-Lang. If not, see <https://www.gnu.org/licenses/>.
 
-package org.hazelv.chime.test;
+package org.hazelv.chime.lang.test;
 
-import org.hazelv.chime.Main;
+import org.hazelv.chime.lang.Main;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
