@@ -74,6 +74,10 @@ public class Main {
             song.run();
         } catch (Exception e) {
             System.err.println("Error: " + e.getMessage());
+            if (debug) {
+                System.err.println("Error: " + e.getClass() + ": " + e.getMessage());
+                System.err.println(Arrays.toString(e.getStackTrace()));
+            }
         }
     }
 
