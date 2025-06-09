@@ -33,7 +33,7 @@ public class Song {
         this.chords = chords;
         this.data = new ArrayList<>();
         this.debug = debug;
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 32; i++) {
             data.add(new Stack<>());
         }
     }
